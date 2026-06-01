@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-    <title>Aurora Beauty - Galerie de services</title>
+    <title>Aurora Beauty - Auto Slideshow</title>
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <!-- Font Awesome 6 -->
@@ -243,7 +243,7 @@
             color: transparent;
         }
 
-        /* GRILLE DES SERVICES */
+        /* CARDS AVEC CARROUSEL AUTO */
         .services-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
@@ -263,7 +263,6 @@
             box-shadow: 0 25px 40px rgba(0,0,0,0.5), 0 0 20px rgba(212,175,55,0.3);
         }
         
-        /* CARROUSEL / GALERIE D'IMAGES */
         .carousel-container {
             position: relative;
             width: 100%;
@@ -279,31 +278,7 @@
             object-fit: cover;
             flex-shrink: 0;
         }
-        .carousel-btn {
-            position: absolute;
-            top: 50%;
-            transform: translateY(-50%);
-            background: rgba(0,0,0,0.6);
-            color: #d4af37;
-            border: none;
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            cursor: pointer;
-            font-size: 1.2rem;
-            transition: 0.3s;
-            z-index: 2;
-        }
-        .carousel-btn:hover {
-            background: #d4af37;
-            color: #0a0807;
-        }
-        .btn-prev {
-            left: 10px;
-        }
-        .btn-next {
-            right: 10px;
-        }
+        /* Petit indicateur visuel (dots) */
         .carousel-dots {
             position: absolute;
             bottom: 10px;
@@ -312,13 +287,13 @@
             display: flex;
             justify-content: center;
             gap: 8px;
+            z-index: 2;
         }
         .dot {
             width: 8px;
             height: 8px;
             border-radius: 50%;
             background: rgba(255,255,255,0.5);
-            cursor: pointer;
             transition: 0.3s;
         }
         .dot.active {
@@ -344,7 +319,7 @@
             margin-bottom: 0;
         }
 
-        /* Popup */
+        /* Popup promo */
         .popup-promo {
             position: fixed;
             bottom: 30px;
@@ -522,7 +497,6 @@
 
     // ========================
     // DONNÉES DES SERVICES (4 IMAGES PAR SERVICE)
-    // Remplacez les URLs par les vôtres
     // ========================
     const servicesData = [
         {
@@ -530,10 +504,10 @@
             icon: "fas fa-cut",
             description: "Coupe, brushing, coloration haut de gamme",
             images: [
-                "https://i.imgur.com/QVGR8kG.jpeg",
-                "URL_COIFFURE_2",
-                "URL_COIFFURE_3",
-                "URL_COIFFURE_4"
+                "https://i.imgur.com/uwsWb7R.jpeg",
+                "https://i.imgur.com/WxoG2Pg.jpeg",
+                "https://i.imgur.com/urEZEk8.jpeg",
+                "https://i.imgur.com/DMk5rYQ.jpeg"
             ]
         },
         {
@@ -541,10 +515,10 @@
             icon: "fas fa-face-smile",
             description: "Nettoyage profond, hydratation, anti-âge",
             images: [
-                "URL_VISAGE_1",
-                "URL_VISAGE_2",
-                "URL_VISAGE_3",
-                "URL_VISAGE_4"
+                "blob:https://imgur.com/517d3021-33fc-4fe8-85db-464ffe0a3591",
+                "blob:https://imgur.com/7adcde0f-27f3-4c85-b7ba-eda95b290f82",
+                "blob:https://imgur.com/744bbae6-8630-43b9-90ca-bc09b6d0c800",
+                "blob:https://imgur.com/049cbcf1-970d-4a02-b1f5-6d4a17762e34"
             ]
         },
         {
@@ -552,10 +526,10 @@
             icon: "fas fa-hand-peace",
             description: "Semi-permanent, ongle art, callus removal",
             images: [
-                "URL_MANUCURE_1",
-                "URL_MANUCURE_2",
-                "URL_MANUCURE_3",
-                "URL_MANUCURE_4"
+                "https://i.imgur.com/zDuxzJO.jpeg",
+                "https://i.imgur.com/5cSlGOA.jpeg",
+                "https://i.imgur.com/obaqFfT.jpeg",
+                "https://i.imgur.com/tydoNeh.jpeg"
             ]
         },
         {
@@ -563,27 +537,16 @@
             icon: "fas fa-hot-tub",
             description: "Hammam traditionnel, massage relaxant",
             images: [
-                "URL_HAMMAM_1",
-                "URL_HAMMAM_2",
-                "URL_HAMMAM_3",
-                "URL_HAMMAM_4"
+                "https://i.imgur.com/gkyLolu.jpeg",
+                "https://i.imgur.com/7aq7ydx.jpeg",
+                "https://i.imgur.com/1M23J9J.jpeg",
+                "https://i.imgur.com/mxlbBxJ.jpeg"
             ]
         },
-        {
-            title: "Soins Esthétiques",
-            icon: "fas fa-spa",
-            description: "Épilation, gommage, modelage corps",
-            images: [
-                "URL_ESTHETIQUE_1",
-                "URL_ESTHETIQUE_2",
-                "URL_ESTHETIQUE_3",
-                "URL_ESTHETIQUE_4"
-            ]
-        }
-    ];
+           ];
 
-    // Fonction pour créer un carrousel avec 4 images
-    function createCarousel(images, serviceIndex) {
+    // Fonction pour créer un carrousel auto
+    function createAutoCarousel(images, serviceIndex) {
         const container = document.createElement('div');
         container.className = 'carousel-container';
         
@@ -597,69 +560,75 @@
             imagesWrapper.appendChild(img);
         });
         
-        const btnPrev = document.createElement('button');
-        btnPrev.className = 'carousel-btn btn-prev';
-        btnPrev.innerHTML = '❮';
-        const btnNext = document.createElement('button');
-        btnNext.className = 'carousel-btn btn-next';
-        btnNext.innerHTML = '❯';
-        
         const dotsContainer = document.createElement('div');
         dotsContainer.className = 'carousel-dots';
-        
+        let dots = [];
         for (let i = 0; i < images.length; i++) {
             const dot = document.createElement('div');
             dot.classList.add('dot');
             if (i === 0) dot.classList.add('active');
-            dot.addEventListener('click', () => goToSlide(serviceIndex, i));
+            dots.push(dot);
             dotsContainer.appendChild(dot);
         }
         
         container.appendChild(imagesWrapper);
-        container.appendChild(btnPrev);
-        container.appendChild(btnNext);
         container.appendChild(dotsContainer);
         
-        // Ajouter les événements
         let currentIndex = 0;
+        let interval;
+        
         const updateCarousel = () => {
             const width = imagesWrapper.clientWidth;
             imagesWrapper.style.transform = `translateX(-${currentIndex * width}px)`;
-            // Mettre à jour les dots
-            const dots = dotsContainer.querySelectorAll('.dot');
             dots.forEach((dot, idx) => {
                 if (idx === currentIndex) dot.classList.add('active');
                 else dot.classList.remove('active');
             });
         };
         
-        btnPrev.addEventListener('click', () => {
-            currentIndex = (currentIndex - 1 + images.length) % images.length;
-            updateCarousel();
-        });
-        btnNext.addEventListener('click', () => {
+        const nextSlide = () => {
             currentIndex = (currentIndex + 1) % images.length;
-            updateCarousel();
-        });
-        
-        window.addEventListener('resize', () => updateCarousel());
-        
-        // Stocker l'index et la fonction de mise à jour pour l'utiliser dans les dots
-        container.updateIndex = (newIndex) => {
-            currentIndex = newIndex;
             updateCarousel();
         };
         
+        // Démarrer l'auto-rotation toutes les 3 secondes
+        const startAutoRotation = () => {
+            if (interval) clearInterval(interval);
+            interval = setInterval(nextSlide, 3000); // 3 secondes
+        };
+        
+        // Arrêter l'auto-rotation (optionnel, pour survol)
+        const stopAutoRotation = () => {
+            if (interval) clearInterval(interval);
+        };
+        
+        // Survol pour arrêter, quitter pour redémarrer
+        container.addEventListener('mouseenter', stopAutoRotation);
+        container.addEventListener('mouseleave', startAutoRotation);
+        
         // Initialiser
-        setTimeout(updateCarousel, 100);
+        setTimeout(() => {
+            updateCarousel();
+            startAutoRotation();
+        }, 100);
+        
+        // Mettre à jour la largeur si redimensionnement
+        window.addEventListener('resize', () => updateCarousel());
+        
+        // Optionnel : permettre de cliquer sur un dot pour changer d'image
+        dots.forEach((dot, idx) => {
+            dot.addEventListener('click', () => {
+                currentIndex = idx;
+                updateCarousel();
+                // Redémarrer l'intervalle (reset timer)
+                startAutoRotation();
+            });
+        });
         
         return container;
     }
     
-    // Stocker les références des carrousels pour les dots
-    const carousels = [];
-    
-    // Générer les cartes de services
+    // Générer les cartes
     const servicesGrid = document.getElementById('servicesGrid');
     servicesData.forEach((service, idx) => {
         const card = document.createElement('div');
@@ -667,11 +636,8 @@
         card.setAttribute('data-aos', 'fade-up');
         if (idx % 2 === 1) card.setAttribute('data-aos-delay', '100');
         
-        // Créer le carrousel
-        const carouselContainer = createCarousel(service.images, idx);
-        carousels.push(carouselContainer);
+        const carousel = createAutoCarousel(service.images, idx);
         
-        // Contenu texte
         const contentDiv = document.createElement('div');
         contentDiv.className = 'service-content';
         contentDiv.innerHTML = `
@@ -680,17 +646,10 @@
             <p>${service.description}</p>
         `;
         
-        card.appendChild(carouselContainer);
+        card.appendChild(carousel);
         card.appendChild(contentDiv);
         servicesGrid.appendChild(card);
     });
-    
-    // Fonction pour aller à un slide spécifique (utilisée par les dots)
-    window.goToSlide = (serviceIndex, slideIndex) => {
-        if (carousels[serviceIndex] && carousels[serviceIndex].updateIndex) {
-            carousels[serviceIndex].updateIndex(slideIndex);
-        }
-    };
 </script>
 </body>
 </html>
